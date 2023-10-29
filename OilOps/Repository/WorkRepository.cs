@@ -6,9 +6,9 @@ namespace OilOps.Repository;
 
 public class WorkRepository : IWorkRepository
 {
-    private readonly WorksDbContext _dbContext;
+    private readonly OilOpsDbContext _dbContext;
 
-    public WorkRepository(WorksDbContext dbContext)
+    public WorkRepository(OilOpsDbContext dbContext)
     {
         _dbContext = dbContext;
     }

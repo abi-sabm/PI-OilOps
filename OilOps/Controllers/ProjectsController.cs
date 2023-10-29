@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using OilOps.DTO;
 using OilOps.Models;
 using OilOps.Repository.Interfaces;
 
@@ -21,7 +22,14 @@ public class ProjectsController : ControllerBase
     public IActionResult Get()
     {
         var projects = _projectRepository.GetAllProjects();
-        return Ok(projects);
+        var projectsDto = projects.Select(project => new ProjectDTO
+        {
+            Name = project.Name,
+            Address = project.Address,
+            Status = project.Status
+        }); 
+        
+        return Ok(projectsDto);
     }
     
     // GET: api/projects/{id}

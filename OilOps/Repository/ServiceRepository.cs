@@ -6,9 +6,9 @@ namespace OilOps.Repository;
 
 public class ServiceRepository : IServiceRepository
 {
-    private readonly ServicesDbContext _dbContext;
+    private readonly OilOpsDbContext _dbContext;
 
-    public ServiceRepository(ServicesDbContext dbContext)
+    public ServiceRepository(OilOpsDbContext dbContext)
     {
         _dbContext = dbContext;
     }

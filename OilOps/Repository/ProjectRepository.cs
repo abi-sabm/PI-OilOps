@@ -6,9 +6,9 @@ namespace OilOps.Repository;
 
 public class ProjectRepository : IProjectRepository
 {
-    private readonly ProjectsDbContext _dbContext;
+    private readonly OilOpsDbContext _dbContext;
 
-    public ProjectRepository(ProjectsDbContext dbContext)
+    public ProjectRepository(OilOpsDbContext dbContext)
     {
         _dbContext = dbContext;
     }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using OilOps.DTO;
 using OilOps.Models;
 using OilOps.Repository.Interfaces;
 
@@ -20,7 +21,17 @@ public class WorkController : ControllerBase
     public IActionResult Get()
     {
         var works = _workRepository.GetAllWorks();
-        return Ok(works);
+        var worksDto = works.Select(work => new WorkDTO
+        {
+            Date = work.Date,
+            HoursService = work.HoursService,
+            HourlyRate = work.HourlyRate,
+            Value = work.Value,
+            IdProject = work.IdProject,
+            IdService = work.IdService
+        });
+        
+        return Ok(worksDto);
     }
 
     // GET: api/works/{id}
@@ -47,11 +58,11 @@ public class WorkController : ControllerBase
         var work = _workRepository.GetWorkById(id);
         if (work == null) return NotFound();
         work.Date = updatedWork.Date;
-        work.IdProject = updatedWork.IdProject;
-        work.IdServices = updatedWork.IdServices;
         work.HoursService = updatedWork.HoursService;
         work.HourlyRate = updatedWork.HourlyRate;
         work.Value = updatedWork.Value;
+        work.IdProject = updatedWork.IdProject;
+        work.IdService = updatedWork.IdService;
         _workRepository.UpdateWork(work);
         return NoContent();
     }

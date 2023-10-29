@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using OilOps.DTO;
 using OilOps.Models;
 using OilOps.Repository.Interfaces;
 
@@ -20,8 +21,16 @@ public class ServicesController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        var services = _serviceRepository.GetAllServices();
-        return Ok(services);
+        var services  =_serviceRepository.GetAllServices() ;
+        var servicesDto = services.Select(service => new ServiceDTO
+        {
+            Name = service.Name,
+            Description = service.Description,
+            Status = service.Status,
+            HourlyRate = service.HourlyRate
+        });
+        
+        return Ok(servicesDto);
     }
     
     // GET: api/services/{id}
@@ -32,6 +41,15 @@ public class ServicesController : ControllerBase
         if (service == null) return NotFound();
         return Ok(service);
     }
+    
+    // GET: api/services/active
+    //[HttpGet("active")]
+    //public IActionResult Get(bool status)
+    //{
+    //    var serviceActive = _serviceRepository.//GetServiceByStatus(status);
+    //    if (serviceActive == null) return NotFound();
+    //    return Ok(serviceActive);
+    //}
     
     // POST: api/services
     [HttpPost]

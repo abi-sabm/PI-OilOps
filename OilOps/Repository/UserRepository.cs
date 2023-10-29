@@ -6,9 +6,9 @@ namespace OilOps.Repository;
 
 public class UserRepository : IUserRepository
 {
-    private readonly UsersDbContext _dbContext;
+    private readonly OilOpsDbContext _dbContext;
 
-    public UserRepository(UsersDbContext dbContext)
+    public UserRepository(OilOpsDbContext dbContext)
     {
         _dbContext = dbContext;
     }

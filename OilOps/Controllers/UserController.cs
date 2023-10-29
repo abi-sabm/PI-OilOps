@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using OilOps.DTO;
 using OilOps.Models;
 using OilOps.Repository.Interfaces;
 
@@ -20,7 +21,15 @@ public class UserController : ControllerBase
     public IActionResult Get()
     {
         var users = _userRepository.GetAllUsers();
-        return Ok(users);
+        var usersDto = users.Select(user => new UserDTO
+        {
+            FullName = user.FullName,
+            DNI = user.DNI,
+            UserName = user.UserName,
+            UserType = user.UserType
+        });
+        
+        return Ok(usersDto);
     }
 
     // GET: api/users/{id}
@@ -46,10 +55,11 @@ public class UserController : ControllerBase
     {
         var user = _userRepository.GetUserById(id);
         if (user == null) return NotFound();
-        user.Name = updatedUser.Name;
+        user.FullName = updatedUser.FullName;
         user.DNI = updatedUser.DNI;
-        user.UserType = updatedUser.UserType;
+        user.UserName = updatedUser.UserName;
         user.Password = updatedUser.Password;
+        user.UserType = updatedUser.UserType;
         _userRepository.UpdateUser(user);
         return NoContent();
     }
