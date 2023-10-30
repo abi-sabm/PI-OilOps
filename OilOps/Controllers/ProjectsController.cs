@@ -1,34 +1,34 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OilOps.DTO;
 using OilOps.Models;
-using OilOps.Repository.Interfaces;
+using OilOps.Models.DTO;
+using OilOps.Services;
 
 namespace OilOps.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-
 public class ProjectsController : ControllerBase
 {
-    private readonly IProjectRepository _projectRepository;
+    private readonly IProjectService _projectService;
 
-    public ProjectsController(IProjectRepository projectRepository)
+    public ProjectsController(IProjectService projectService)
     {
-        _projectRepository = projectRepository;
+        _projectService = projectService;
     }
     
     // GET: api/projects
     [HttpGet]
-    public IActionResult Get()
+    [Authorize]
+    public async Task<IActionResult> Get()
     {
-        var projects = _projectRepository.GetAllProjects();
-        var projectsDto = projects.Select(project => new ProjectDTO
+        var projects = await _projectService.GetAllProjects();
+        var projectsDto = projects.Select(project => new ProjectDto
         {
             Name = project.Name,
             Address = project.Address,
             Status = project.Status
         }); 
-        
         return Ok(projectsDto);
     }
     
@@ -36,16 +36,26 @@ public class ProjectsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var project = _projectRepository.GetProjectById(id);
+        var project = _projectService.GetProjectById(id);
         if (project == null) return NotFound();
         return Ok(project);
+    }
+    
+     //GET: api/projects/status
+    [HttpGet("status/{status}")]
+    [Authorize]
+    public async Task<IActionResult> Get(int status)
+    {
+        var serviceActive = await _projectService.GetProjectByStatus(status);
+        if (serviceActive == null) return NotFound();
+        return Ok(serviceActive);
     }
     
     // POST: api/projects
     [HttpPost]
     public IActionResult Post(Project project)
     {
-        _projectRepository.AddProject(project);
+        _projectService.AddProject(project);
         return CreatedAtAction(nameof(Get), new { id = project.Id }, project);
     }
     
@@ -53,12 +63,12 @@ public class ProjectsController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put(int id, Project updatedProject)
     {
-        var project = _projectRepository.GetProjectById(id);
+        var project = _projectService.GetProjectById(id);
         if (project == null) return NotFound();
         project.Name = updatedProject.Name;
         project.Address = updatedProject.Address;
         project.Status = updatedProject.Status;
-        _projectRepository.UpdateProject(project);
+        _projectService.UpdateProject(project);
         return NoContent();
     }
 
@@ -66,9 +76,9 @@ public class ProjectsController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var project = _projectRepository.GetProjectById(id);
+        var project = _projectService.GetProjectById(id);
         if (project == null) return NotFound();
-        _projectRepository.DeleteProject(id);
+        _projectService.DeleteProject(id);
         return NoContent();
     }
 }

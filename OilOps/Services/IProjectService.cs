@@ -1,12 +1,12 @@
 using OilOps.Models;
 
-namespace OilOps.Repository.Interfaces;
+namespace OilOps.Services;
 
-public interface IProjectRepository
+public interface IProjectService
 {
     Task<IEnumerable<Project>> GetAllProjects();
     Task<Project> GetProjectById(int id);
-    Task<IEnumerable<Project>> GetProjectByStatus(int status);
+    Task<IEnumerable<Project>> GetProjectByStatus();
     Task AddProject(Project project);
     Task UpdateProject(Project project);
     Task DeleteProject(int id);

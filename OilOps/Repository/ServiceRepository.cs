@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using OilOps.DataAccess;
 using OilOps.Models;
 using OilOps.Repository.Interfaces;
@@ -13,35 +14,41 @@ public class ServiceRepository : IServiceRepository
         _dbContext = dbContext;
     }
     
-    public IEnumerable<Service> GetAllServices()
+    public async Task<IEnumerable<Service>> GetAllServices()
     {
-        return _dbContext.Services.ToList();
+        return await _dbContext.Services
+            .ToListAsync();
     }
 
-    public Service GetServiceById(int id)
+    public async Task<Service> GetServiceById(int id)
     {
-        return _dbContext.Services.FirstOrDefault(p => p.Id == id);
+        return await _dbContext.Services.FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    public void AddService(Service service)
+    public async Task<IEnumerable<Service>> GetServiceActive(bool status)
+    { 
+        return await _dbContext.Services.Where(s => s.Status == status).ToListAsync();
+    }
+    
+    public async Task AddService(Service service)
     {
         _dbContext.Services.Add(service);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void UpdateService(Service service)
+    public async Task UpdateService(Service service)
     {
         _dbContext.Services.Update(service);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void DeleteService(int id)
+    public async Task DeleteService(int id)
     {
-        var service = _dbContext.Services.FirstOrDefault(p => p.Id == id);
+        var service = _dbContext.Services.FirstOrDefault(s => s.Id == id);
         if (service != null)
         {
             _dbContext.Services.Remove(service);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

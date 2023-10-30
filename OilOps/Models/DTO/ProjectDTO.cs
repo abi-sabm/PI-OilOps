@@ -1,6 +1,6 @@
-namespace OilOps.DTO;
+namespace OilOps.Models.DTO;
 
-public class ProjectDTO
+public class ProjectDto
 {
     public string Name { get; set; }
     public string Address { get; set; }

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using OilOps.DataAccess;
 using OilOps.Models;
 using OilOps.Repository.Interfaces;
@@ -13,35 +14,41 @@ public class ProjectRepository : IProjectRepository
         _dbContext = dbContext;
     }
 
-    public IEnumerable<Project> GetAllProjects()
+    public async Task<IEnumerable<Project>> GetAllProjects()
     {
-        return _dbContext.Projects.ToList();
+        return await _dbContext.Projects
+            .ToListAsync();
     }
 
-    public Project GetProjectById(int id)
+    public async Task<Project> GetProjectById(int id)
     {
-        return _dbContext.Projects.FirstOrDefault(p => p.Id == id);
+        return await _dbContext.Projects.FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    public void AddProject(Project project)
+    public async Task<IEnumerable<Project>> GetProjectByStatus(int status)
     {
-        _dbContext.Projects.Add(project);
-        _dbContext.SaveChanges();
-    }
-
-    public void UpdateProject(Project project)
-    {
-        _dbContext.Projects.Update(project);
-        _dbContext.SaveChanges();
+        return await _dbContext.Projects.Where(p => p.Status == status).ToListAsync();
     }
     
-    public void DeleteProject(int id)
+    public async Task AddProject(Project project)
+    {
+        _dbContext.Projects.Add(project);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateProject(Project project)
+    {
+        _dbContext.Projects.Update(project);
+        await _dbContext.SaveChangesAsync();
+    }
+    
+    public async Task DeleteProject(int id)
     {
         var project = _dbContext.Projects.FirstOrDefault(p => p.Id == id);
         if (project != null)
         {
             _dbContext.Projects.Remove(project);
-            _dbContext.SaveChanges();  
+            await _dbContext.SaveChangesAsync();  
         }
     }
 }

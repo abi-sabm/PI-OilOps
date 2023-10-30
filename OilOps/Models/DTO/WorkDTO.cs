@@ -1,4 +1,4 @@
-namespace OilOps.DTO;
+namespace OilOps.Models.DTO;
 
 public class WorkDTO
 {

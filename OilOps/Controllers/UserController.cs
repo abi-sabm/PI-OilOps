@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using OilOps.DTO;
 using OilOps.Models;
+using OilOps.Models.DTO;
 using OilOps.Repository.Interfaces;
 
 namespace OilOps.Controllers;

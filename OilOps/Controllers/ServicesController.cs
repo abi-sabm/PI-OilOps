@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using OilOps.DTO;
 using OilOps.Models;
-using OilOps.Repository.Interfaces;
+using OilOps.Models.DTO;
+using OilOps.Services;
 
 namespace OilOps.Controllers;
 
@@ -10,18 +10,19 @@ namespace OilOps.Controllers;
 [Route("api/[controller]")]
 public class ServicesController : ControllerBase
 {
-    private readonly IServiceRepository _serviceRepository;
+    private readonly IServiceService _serviceService;
 
-    public ServicesController(IServiceRepository serviceRepository)
+    public ServicesController(IServiceService serviceService)
     {
-        _serviceRepository = serviceRepository;
+        _serviceService = serviceService;
     }
     
     // GET: api/services
     [HttpGet]
-    public IActionResult Get()
+    [Authorize]
+    public async Task<IActionResult> Get()
     {
-        var services  =_serviceRepository.GetAllServices() ;
+        var services = await _serviceService.GetAllServices();
         var servicesDto = services.Select(service => new ServiceDTO
         {
             Name = service.Name,
@@ -29,56 +30,60 @@ public class ServicesController : ControllerBase
             Status = service.Status,
             HourlyRate = service.HourlyRate
         });
-        
         return Ok(servicesDto);
     }
     
     // GET: api/services/{id}
     [HttpGet("{id}")]
-    public IActionResult Get(int id)
+    [Authorize]
+    public async Task<IActionResult> Get(int id)
     {
-        var service = _serviceRepository.GetServiceById(id);
+        var service = await _serviceService.GetServiceById(id);
         if (service == null) return NotFound();
         return Ok(service);
     }
     
-    // GET: api/services/active
-    //[HttpGet("active")]
-    //public IActionResult Get(bool status)
-    //{
-    //    var serviceActive = _serviceRepository.//GetServiceByStatus(status);
-    //    if (serviceActive == null) return NotFound();
-    //    return Ok(serviceActive);
-    //}
+    //GET: api/services/active
+    [HttpGet("active/{status}")]
+    [Authorize]
+    public async Task<IActionResult> Get(bool status)
+    {
+        var serviceActive = await _serviceService.GetServiceActive(status);
+        if (serviceActive == null) return NotFound();
+        return Ok(serviceActive);
+    }
     
     // POST: api/services
     [HttpPost]
-    public IActionResult Post(Service service)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Post(Service service)
     {
-        _serviceRepository.AddService(service);
+        await _serviceService.AddService(service);
         return CreatedAtAction(nameof(Get), new { id = service.Id }, service);
     }
     
     //PUT: api/services/{id}
     [HttpPut("{id}")]
-    public IActionResult Put(int id, Service updateService)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Put(int id, Service updateService)
     {
-        var service = _serviceRepository.GetServiceById(id);
+        var service = await _serviceService.GetServiceById(id);
         if (service == null) return NotFound();
         service.Description = updateService.Description;
         service.Status = updateService.Status;
         service.HourlyRate = updateService.HourlyRate;
-        _serviceRepository.UpdateService(service);
+        await _serviceService.UpdateService(service);
         return NoContent();
     }
     
     //DELETE: api/services/{id}
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Delete(int id)
     {
-        var service = _serviceRepository.GetServiceById(id);
+        var service = await _serviceService.GetServiceById(id);
         if (service == null) return NotFound();
-        _serviceRepository.DeleteService(id);
+        _serviceService.DeleteService(id);
         return NoContent();
     }
 }

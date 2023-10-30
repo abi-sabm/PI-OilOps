@@ -1,8 +1,8 @@
 using OilOps.Models;
 
-namespace OilOps.Repository.Interfaces;
+namespace OilOps.Services;
 
-public interface IServiceRepository
+public interface IServiceService
 {
     Task<IEnumerable<Service>> GetAllServices();
     Task<Service> GetServiceById(int id);
