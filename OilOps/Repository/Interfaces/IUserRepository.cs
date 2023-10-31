@@ -1,12 +1,14 @@
+using Azure.Identity;
 using OilOps.Models;
 
 namespace OilOps.Repository.Interfaces;
 
 public interface IUserRepository
 {
-    IEnumerable<User> GetAllUsers();
-    User GetUserById(int id);
-    void AddUser(User user);
-    void UpdateUser(User user);
-    void DeleteUser(int id);
+    Task<IEnumerable<User>> GetAllUsers();
+    Task<User> GetUserById(int id);
+    Task AddUser(User user);
+    Task UpdateUser(User user);
+    Task DeleteUser(int id);
+    /*Task<Login> UserSession(string userName, string password);*/
 }

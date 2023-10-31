@@ -43,7 +43,7 @@ public class ServicesController : ControllerBase
         return Ok(service);
     }
     
-    //GET: api/services/active
+    // GET: api/services/active
     [HttpGet("active/{status}")]
     [Authorize]
     public async Task<IActionResult> Get(bool status)
@@ -83,7 +83,7 @@ public class ServicesController : ControllerBase
     {
         var service = await _serviceService.GetServiceById(id);
         if (service == null) return NotFound();
-        _serviceService.DeleteService(id);
+        await _serviceService.DeleteService(id);
         return NoContent();
     }
 }

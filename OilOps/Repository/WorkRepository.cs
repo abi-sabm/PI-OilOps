@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using OilOps.DataAccess;
 using OilOps.Models;
 using OilOps.Repository.Interfaces;
@@ -13,35 +14,36 @@ public class WorkRepository : IWorkRepository
         _dbContext = dbContext;
     }
 
-    public IEnumerable<Work> GetAllWorks()
+    public async Task<IEnumerable<Work>> GetAllWorks()
     {
-        return _dbContext.Works.ToList();
+        return await _dbContext.Works
+            .ToListAsync();
     }
 
-    public Work GetWorkById(int id)
+    public async Task<Work> GetWorkById(int id)
     {
-        return _dbContext.Works.FirstOrDefault(p => p.Id == id);
+        return await _dbContext.Works.FirstOrDefaultAsync(w => w.Id == id);
     }
 
-    public void AddWork(Work work)
+    public async Task AddWork(Work work)
     {
         _dbContext.Works.Add(work);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void UpdateWork(Work work)
+    public async Task UpdateWork(Work work)
     {
         _dbContext.Works.Update(work);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void DeleteWork(int id)
+    public async Task DeleteWork(int id)
     {
-        var work = _dbContext.Works.FirstOrDefault(p => p.Id == id);
+        var work = _dbContext.Works.FirstOrDefault(w => w.Id == id);
         if (work != null)
         {
             _dbContext.Works.Remove(work);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

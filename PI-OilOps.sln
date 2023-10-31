@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OilOps", "OilOps\OilOps.csproj", "{D94C4698-8BD8-4BB7-8974-8F529252404B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OilOpsFront", "OilOpsFront\OilOpsFront.csproj", "{2266F842-7B20-40DC-A8E7-D0E70088C56A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{D94C4698-8BD8-4BB7-8974-8F529252404B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D94C4698-8BD8-4BB7-8974-8F529252404B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D94C4698-8BD8-4BB7-8974-8F529252404B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2266F842-7B20-40DC-A8E7-D0E70088C56A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2266F842-7B20-40DC-A8E7-D0E70088C56A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2266F842-7B20-40DC-A8E7-D0E70088C56A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2266F842-7B20-40DC-A8E7-D0E70088C56A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

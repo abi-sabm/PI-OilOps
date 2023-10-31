@@ -14,6 +14,7 @@ public class OilOpsDbContext : DbContext
     public DbSet<Project> Projects { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Work> Works { get; set; }
+    public DbSet<LoginUser> LoginUsers { get; set; }
 
     // Especificar al modelo que las tablas van en singular 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

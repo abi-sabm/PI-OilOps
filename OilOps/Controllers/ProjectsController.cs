@@ -34,51 +34,55 @@ public class ProjectsController : ControllerBase
     
     // GET: api/projects/{id}
     [HttpGet("{id}")]
-    public IActionResult Get(int id)
+    [Authorize]
+    public async Task<IActionResult> Get(int id)
     {
-        var project = _projectService.GetProjectById(id);
+        var project = await _projectService.GetProjectById(id);
         if (project == null) return NotFound();
         return Ok(project);
     }
     
-     //GET: api/projects/status
+    // GET: api/projects/status/{status}
     [HttpGet("status/{status}")]
     [Authorize]
-    public async Task<IActionResult> Get(int status)
+    public async Task<IActionResult> GetProjectsByStatus(int status)
     {
-        var serviceActive = await _projectService.GetProjectByStatus(status);
-        if (serviceActive == null) return NotFound();
-        return Ok(serviceActive);
+        var projects = await _projectService.GetProjectByStatus(status);
+        if (projects == null) return NotFound();
+        return Ok(projects);
     }
     
     // POST: api/projects
     [HttpPost]
-    public IActionResult Post(Project project)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Post(Project project)
     {
-        _projectService.AddProject(project);
+        await _projectService.AddProject(project);
         return CreatedAtAction(nameof(Get), new { id = project.Id }, project);
     }
     
     // PUT: api/projects/{id}
     [HttpPut("{id}")]
-    public IActionResult Put(int id, Project updatedProject)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Put(int id, Project updatedProject)
     {
-        var project = _projectService.GetProjectById(id);
+        var project = await _projectService.GetProjectById(id);
         if (project == null) return NotFound();
         project.Name = updatedProject.Name;
         project.Address = updatedProject.Address;
         project.Status = updatedProject.Status;
-        _projectService.UpdateProject(project);
+        await _projectService.UpdateProject(project);
         return NoContent();
     }
 
     // DELETE: api/projects/{id}
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Delete(int id)
     {
-        var project = _projectService.GetProjectById(id);
+        var project = await _projectService.GetProjectById(id);
         if (project == null) return NotFound();
-        _projectService.DeleteProject(id);
+        await _projectService.DeleteProject(id);
         return NoContent();
     }
 }

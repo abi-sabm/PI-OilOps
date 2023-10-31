@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using OilOps.DataAccess;
 using OilOps.Models;
 using OilOps.Repository.Interfaces;
@@ -13,35 +14,43 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
     
-    public IEnumerable<User> GetAllUsers()
+    public async Task<IEnumerable<User>> GetAllUsers()
     {
-        return _dbContext.Users.ToList();
+        return await _dbContext.Users
+            .ToListAsync();
     }
 
-    public User GetUserById(int id)
+    public async Task<User> GetUserById(int id)
     {
-        return _dbContext.Users.FirstOrDefault(p => p.Id == id);
+        return await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
     }
 
-    public void AddUser(User user)
+    public async Task AddUser(User user)
     {
         _dbContext.Users.Add(user);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void UpdateUser(User user)
+    public async Task UpdateUser(User user)
     {
         _dbContext.Users.Update(user);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void DeleteUser(int id)
+    public async Task DeleteUser(int id)
     {
-        var user = _dbContext.Users.FirstOrDefault(p => p.Id == id);
+        var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
         if (user != null)
         {
             _dbContext.Users.Remove(user);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
+    
+    // login -> userSession para almacenar el login
+  /*  public async Task<Login> UserSession(string userName, string password)
+    {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == userName && u.Password == password);
+        return user;
+    }*/
 }

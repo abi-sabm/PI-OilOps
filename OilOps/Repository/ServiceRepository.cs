@@ -27,7 +27,8 @@ public class ServiceRepository : IServiceRepository
 
     public async Task<IEnumerable<Service>> GetServiceActive(bool status)
     { 
-        return await _dbContext.Services.Where(s => s.Status == status).ToListAsync();
+        return await _dbContext.Services.Where(s => s.Status == status)
+            .ToListAsync();
     }
     
     public async Task AddService(Service service)

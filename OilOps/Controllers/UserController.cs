@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OilOps.Models;
 using OilOps.Models.DTO;
-using OilOps.Repository.Interfaces;
+using OilOps.Services;
 
 namespace OilOps.Controllers;
 
@@ -9,18 +10,19 @@ namespace OilOps.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
 
-    public UserController(IUserRepository userRepository)
+    public UserController(IUserService userService)
     {
-        _userRepository = userRepository;
+        _userService = userService;
     }
     
     //GET: api/users
     [HttpGet]
-    public IActionResult Get()
+    [Authorize]
+    public async Task<IActionResult> Get()
     {
-        var users = _userRepository.GetAllUsers();
+        var users = await _userService.GetAllUsers();
         var usersDto = users.Select(user => new UserDTO
         {
             FullName = user.FullName,
@@ -28,49 +30,58 @@ public class UserController : ControllerBase
             UserName = user.UserName,
             UserType = user.UserType
         });
-        
         return Ok(usersDto);
     }
 
     // GET: api/users/{id}
     [HttpGet("{id}")]
-    public IActionResult Get(int id)
+    [Authorize]
+    public async Task<IActionResult> Get(int id)
     {
-        var user = _userRepository.GetUserById(id);
+        var user = await _userService.GetUserById(id);
         if (user == null) return NotFound();
         return Ok(user);
     }
 
     // POST: api/users
     [HttpPost]
-    public IActionResult Post(User user)
-    {
-        _userRepository.AddUser(user);
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Post(User user)
+    { 
+        await _userService.AddUser(user);
         return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
     }
 
     // PUT: api/users/{id}
     [HttpPut("{id}")]
-    public IActionResult Put(int id, User updatedUser)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Put(int id, User updatedUser)
     {
-        var user = _userRepository.GetUserById(id);
+        var user = await _userService.GetUserById(id);
         if (user == null) return NotFound();
         user.FullName = updatedUser.FullName;
         user.DNI = updatedUser.DNI;
         user.UserName = updatedUser.UserName;
         user.Password = updatedUser.Password;
         user.UserType = updatedUser.UserType;
-        _userRepository.UpdateUser(user);
+        _userService.UpdateUser(user);
         return NoContent();
     }
 
     // DELETE: api/users/{id}
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Delete(int id)
     {
-        var user = _userRepository.GetUserById(id);
-        if (user == null) return NotFound();
-        _userRepository.DeleteUser(id);
+        var user = await _userService.GetUserById(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        if (user.UserType == 1)
+        { 
+            await _userService.DeleteUser(id);
+        }
         return NoContent();
     }  
 }

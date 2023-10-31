@@ -27,7 +27,8 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<IEnumerable<Project>> GetProjectByStatus(int status)
     {
-        return await _dbContext.Projects.Where(p => p.Status == status).ToListAsync();
+        return await _dbContext.Projects.Where(p => p.Status == status)
+            .ToListAsync();
     }
     
     public async Task AddProject(Project project)

@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OilOps.Models;
 using OilOps.Models.DTO;
 using OilOps.Repository.Interfaces;
+using OilOps.Services;
 
 namespace OilOps.Controllers;
 
@@ -9,18 +11,19 @@ namespace OilOps.Controllers;
 [Route("api/[controller]")]
 public class WorkController : ControllerBase
 {
-    private readonly IWorkRepository _workRepository;
+    private readonly IWorkService _workService;
 
-    public WorkController(IWorkRepository workRepository)
+    public WorkController(IWorkService workService)
     {
-        _workRepository = workRepository;
+        _workService = workService;
     }
     
     //GET: api/works
     [HttpGet]
-    public IActionResult Get()
+    [Authorize]
+    public async Task<IActionResult> Get()
     {
-        var works = _workRepository.GetAllWorks();
+        var works = await _workService.GetAllWorks();
         var worksDto = works.Select(work => new WorkDTO
         {
             Date = work.Date,
@@ -30,32 +33,34 @@ public class WorkController : ControllerBase
             IdProject = work.IdProject,
             IdService = work.IdService
         });
-        
         return Ok(worksDto);
     }
 
     // GET: api/works/{id}
     [HttpGet("{id}")]
-    public IActionResult Get(int id)
+    [Authorize]
+    public async Task<IActionResult> Get(int id)
     {
-        var work = _workRepository.GetWorkById(id);
+        var work = await _workService.GetWorkById(id);
         if (work == null) return NotFound();
         return Ok(work);
     }
 
     // POST: api/works
     [HttpPost]
-    public IActionResult Post(Work work)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Post(Work work)
     {
-        _workRepository.AddWork(work);
+        await _workService.AddWork(work);
         return CreatedAtAction(nameof(Get), new { id = work.Id }, work);
     }
 
     // PUT: api/works/{id}
     [HttpPut("{id}")]
-    public IActionResult Put(int id, Work updatedWork)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Put(int id, Work updatedWork)
     {
-        var work = _workRepository.GetWorkById(id);
+        var work = await _workService.GetWorkById(id);
         if (work == null) return NotFound();
         work.Date = updatedWork.Date;
         work.HoursService = updatedWork.HoursService;
@@ -63,17 +68,18 @@ public class WorkController : ControllerBase
         work.Value = updatedWork.Value;
         work.IdProject = updatedWork.IdProject;
         work.IdService = updatedWork.IdService;
-        _workRepository.UpdateWork(work);
+        await _workService.UpdateWork(work);
         return NoContent();
     }
 
     // DELETE: api/works/{id}
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    [Authorize(Roles = "1")]
+    public async Task<IActionResult> Delete(int id)
     {
-        var work = _workRepository.GetWorkById(id);
+        var work = await _workService.GetWorkById(id);
         if (work == null) return NotFound();
-        _workRepository.DeleteWork(id);
+        await _workService.DeleteWork(id);
         return NoContent();
     }  
 }
