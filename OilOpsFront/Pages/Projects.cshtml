@@ -1,0 +1,167 @@
+@page
+@model OilOpsFront.Pages.Projects
+
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "Proyectos";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+</head>
+
+<body>
+<div>
+    <div class="img-box">
+        <img src="images/projects.jpg" alt="bg1"/> 
+            
+        <div class="title">
+            <h1>Proyectos</h1>
+            <h2>Administrá tus proyectos de manera confiable y sencilla</h2>
+        </div>
+    </div>
+    
+    <!-- List: GetAll  -->
+    <h3 class="h3">Proyectos en curso</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var project in Model.projectList)
+        {
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Cod. Proyecto:</p>
+                        <p class="card-text">@project.Id</p>
+                        
+                        <p class="card-title">Nombre</p>
+                        <p class="card-text">@project.Name</p>
+                        
+                        <p class="card-title">Dirección</p>
+                        <p class="card-text">@project.Address</p>
+                        
+                        <p class="card-title">Estado</p>
+                        <p class="card-text">@project.Status</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    
+    <!-- Search: GetById  -->
+    <form method="get" class="form-inline my-2 my-lg-0">
+        <p>Buscador mediante Código de Proyecto</p>
+        <input
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"/>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            Buscar
+        </button>
+    </form> 
+    <div class="container-box">
+        <article class="box">
+            @foreach(var project in Model.projectList)
+            {
+                <div class="properties">
+                    <div class="name">
+                        <p>Nombre</p>
+                        <p>@project.Name</p>
+                    </div>
+                    <div class=id>
+                        <p>Cod. Proyecto:</p>
+                        <p>@project.Id</p>
+                    </div> 
+                    <div class="address">
+                        <p>Dirección</p>
+                        <p>@project.Address</p>
+                    </div>
+                    <div class="status">
+                        <p>Estado</p>
+                        <p>@project.Status</p>
+                    </div>
+                </div>
+            }
+        </article>
+    </div>
+    
+    <!-- Add - Edit - Delete?: Post -->
+    <div class="cart">
+        <form method="post"> 
+            <div class="box">
+                <div class="main-box">
+                    <label asp-for="project.Id" for="Id" class="form-label">Código del Proyecto</label>
+                    <input
+                        asp-for="project.Id"
+                        type="number" 
+                        id="Id" 
+                        name="Id" 
+                        class="inputs" 
+                        placeholder="Ingresar código del proyecto (num)" />
+                </div>
+                <div class="main-box">
+                    <label asp-for="project.Name" for="Name" class="form-label">Nombre</label>
+                    <input 
+                        asp-for="project.Name"
+                        type="text" 
+                        id="Name" 
+                        name="Name" 
+                        class="inputs" 
+                        placeholder="Ingresar nombre del proyecto" />
+                </div>
+            </div>
+            <div class="content">
+                <label asp-for="project.Address" for="Address" class="form-label">Dirección</label>
+                <input 
+                    asp-for="project.Address" 
+                    type="text" 
+                    id="Address" 
+                    name="Address" 
+                    class="inputs" 
+                    placeholder="Ingresar dirección del proyecto" />
+            </div>
+            <div class="main-box">
+                <p>Estado</p>
+                <label asp-for="project.Status" for="Status" class="form-label">
+                    <input 
+                        asp-for="project.Status"
+                        type="radio" 
+                        id="Status" 
+                        name="Status" 
+                        value="Pendiente" checked 
+                        class="radio" /> Proyecto Pendiente
+                </label>
+                <label asp-for="project.Status" for="Status" class="form-label">
+                    <input 
+                        asp-for="project.Status"
+                        type="radio" 
+                        id="Status" 
+                        name="Status" 
+                        value="Confirmado" 
+                        class="radio" /> Proyecto Confirmado
+                </label>
+                <label asp-for="project.Status" for="Status" class="form-label">
+                    <input 
+                        asp-for="project.Status"
+                        type="radio" 
+                        id="Status" 
+                        name="Status" 
+                        value="Terminado" 
+                        class="radio" /> Proyecto Terminado
+                </label>
+            </div>
+            <div class="buttons">
+                <button asp-page-handler="post"
+                        type="submit" 
+                        class="btn btn-success">Agregar
+                </button>
+                        <!-- Edit:   -->
+                        <!-- <button type="submit" class="btn btn-primary">Modificar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button> -->
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

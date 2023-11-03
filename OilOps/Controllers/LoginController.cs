@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OilOps.DataAccess;
 using OilOps.Models;
@@ -28,13 +29,12 @@ public class LoginController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginUser request)
     {
-        //IActionResult response = Unauthorized();
-        var user = await _dbContext.LoginUsers.FindAsync(request.UserName);
+        var user = await _dbContext.Users.FirstOrDefaultAsync(p => p.UserName == request.UserName && p.Password == request.Password);
         if (user == null)
         {
             return StatusCode(StatusCodes.Status401Unauthorized, new { token = "Inexistente / Inhabilitado" });
         }
-        if (request.UserName == user.UserName && request.Password == user.Password)
+        else
         {
             var issuer = configuration["Jwt:Issuer"];
             var audience = configuration["Jwt:Audience"];
@@ -66,10 +66,6 @@ public class LoginController : ControllerBase
             var jwtToken = tokenHandler.WriteToken(token);
 
             return StatusCode(StatusCodes.Status200OK, new { token = jwtToken });
-        }
-        else
-        {
-            return StatusCode(StatusCodes.Status401Unauthorized, new { token = "Inexistente / Inhabilitado" });
         }
     }
 }

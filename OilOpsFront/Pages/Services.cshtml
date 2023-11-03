@@ -1,0 +1,179 @@
+@page
+@model OilOpsFront.Pages.Services
+
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "Servicios";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+</head>
+
+<body>
+<div>
+    <div class="img-box">
+        <img src="images/services.png" alt="bg1"/> 
+        
+        <div class="title">
+            <h1>Servicios</h1>
+            <h2>Todos nuestros servicios a tu disposición</h2>
+        </div>
+    </div>
+    
+    <!-- List: GetAll -->
+    <h3 class="h3">Servicios disponibles</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var service in Model.serviceList)
+        {
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Nombre</p>
+                        <p class="card-text">@service.Name</p>
+                        
+                        <p class="card-title">Cod. Servicio:</p>
+                        <p class="card-text">@service.Id</p>
+                        
+                        <p class="card-title">Descripción</p>
+                        <p class="card-text">@service.Description</p>
+                        
+                        <p class="card-title">Valor por hora</p>
+                        <p class="card-text">@service.HourlyRate</p>
+                        
+                        <p class="card-title">Estado</p>
+                        <p class="card-text">@service.Status</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    
+    <!-- Search: GetById -->
+    <form method="get" class="form-inline my-2 my-lg-0">
+        <p>Buscador mediante Código de Servicio</p>
+        <input
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"/>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            Buscar
+        </button>
+    </form>
+    
+    <div class="container-box">
+        <article class="box">
+            @foreach(var service in Model.serviceList)
+            {
+                <div class="properties">
+                    <div class="name">
+                        <p>Nombre</p>
+                        <p>@service.Name</p>
+                    </div>
+                    <div class=id>
+                        <p>Cod. Servicio:</p>
+                        <p>@service.Id</p>
+                    </div>            
+                    <div class="description">
+                        <p>Descripción</p>
+                        <p>@service.Description</p>
+                    </div>
+                    <div class="hourlyRate">
+                        <p>Valor por hora</p>
+                        <p>@service.HourlyRate</p>
+                    </div>
+                    <div class="status">
+                        <p>Estado</p>
+                        <p>@service.Status</p>
+                    </div>
+                </div>
+            }
+        </article>
+    </div>
+
+    <!-- Add - Edit - Delete?: Post -->
+    <div class="cart">
+        <form method="post">
+            <div class="box">
+                <div class="main-box">
+                     <label asp-for="service.Id" for="Id" class="form-label">Código del Servicio</label>
+                    <input
+                        asp-for="service.Id"
+                        type="number" 
+                        id="Id" 
+                        name="Id" 
+                        class="inputs" 
+                        placeholder="Ingresar código del servicio" />
+                </div>
+                <div class="main-box">
+                    <label asp-for="service.Name" for="Name" class="form-label">Nombre</label>
+                    <input 
+                        asp-for="service.Name"
+                        type="text" 
+                        id="Name" 
+                        name="Name" 
+                        class="inputs" 
+                        placeholder="Ingresar nombre del servicio" />
+                </div>
+            </div>
+            <div class="content">
+                <label asp-for="service.Description" for="Description" class="form-label">Descripción</label>
+                <input 
+                    asp-for="service.Description" 
+                    type="text" 
+                    id="Description" 
+                    name="Description" 
+                    class="inputs" 
+                    placeholder="Ingresar descripción del servicio" />
+            </div>
+            <div class="box">
+                <div class="main-box">
+                    <label asp-for="service.HourlyRate" for="HourlyRate" class="form-label">Valor por hora</label>
+                    <input 
+                        asp-for="service.HourlyRate" 
+                        type="number" 
+                        id="HourlyRate" 
+                        name="HourlyRate" 
+                        step="0.01" 
+                        class="inputs" 
+                        placeholder="Ingresar valor del servicio" />
+                </div>
+                <div class="main-box">
+                    <p>Estado</p>
+                    <label asp-for="service.Status" for="Status" class="form-label">
+                        <input 
+                            asp-for="service.Status"
+                            type="radio" 
+                            id="Status" 
+                            name="Status" 
+                            value="true" checked 
+                            class="radio" /> Servicio Activo
+                    </label>
+                    <label asp-for="service.Status" for="Status" class="form-label">
+                        <input 
+                            asp-for="service.Status"
+                            type="radio" 
+                            id="Status" 
+                            name="Status" 
+                            value="false" 
+                            class="radio" /> Servicio no disponible
+                    </label>
+                </div>
+            </div>
+            <div class="buttons">
+                <button asp-page-handler="post"
+                        type="submit" 
+                        class="btn btn-success">Agregar
+                </button>
+                <!-- Edit:   -->
+                <!-- <button type="submit" class="btn btn-primary">Modificar</button>
+                <button type="submit" class="btn btn-danger">Eliminar</button> -->
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

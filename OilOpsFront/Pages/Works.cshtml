@@ -1,0 +1,206 @@
+@page
+@model OilOpsFront.Pages.Works
+
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "Trabajos";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+</head>
+
+<body>
+<div>
+    <div class="img-box">
+        <img src="images/works.jpg" alt="bg1"/> 
+        
+        <div class="title">
+            <h1>Trabajos</h1>
+            <h2>La información de cada trabajo en un solo lugar</h2>
+        </div>
+    </div>
+    
+    <!-- List: GetAll -->
+    <h3 class="h3">Trabajos disponibles</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var work in Model.workList)
+        {
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Cod. Trabajo:</p>
+                        <p class="card-text">@work.Id</p>
+                        
+                        <p class="card-title">Fecha:</p>
+                        <p class="card-text">@work.Date</p>
+                        
+                        <p class="card-title">Horas solicitadas:</p>
+                        <p class="card-text">@work.HoursService</p>
+                        
+                        <p class="card-title">Costo por hora</p>
+                        <p class="card-text">@work.HourlyRate</p>
+                        
+                        <p class="card-title">Valor total</p>
+                        <p class="card-text">@work.Value</p>
+                        
+                        <p class="card-title">Cod. Proyecto:</p>
+                        <p class="card-text">@work.IdProject</p>
+                        
+                        <p class="card-title">Cod. Proyecto:</p>
+                        <p class="card-text">@work.IdService</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    
+    <!-- Search: GetById -->
+    <form method="get" class="form-inline my-2 my-lg-0">
+        <p>Buscador mediante Código de Trabajo</p>
+        <input
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"/>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            Buscar
+        </button>
+    </form>
+    
+    <div class="container-box">
+        <article class="box">
+            @foreach(var work in Model.workList)
+            {
+                <div class="properties">
+                    <div class=id>
+                        <p>Cod. Trabajo:</p>
+                        <p>@work.Id</p>
+                    </div>                    
+                    <div class="date">
+                        <p>Fecha:</p>
+                        <p>@work.Date</p>
+                    </div>
+                    <div class="hoursService">
+                        <p>Horas solicitadas:</p>
+                        <p>@work.HoursService</p>
+                    </div>
+                    <div class="hourlyRate">
+                        <p>Valor por hora</p>
+                        <p>@work.HourlyRate</p>
+                    </div>
+                    <div class="value">
+                        <p>Valor total</p>
+                        <p>@work.Value</p>
+                    </div>
+                    <div class="idProject">
+                        <p>Cod. Proyecto:</p>
+                        <p>@work.IdProject</p>
+                    </div>
+                    <div class="idServicio">
+                        <p>Cod. Servicio:</p>
+                        <p>@work.IdService</p>
+                    </div>
+                </div>
+            }
+        </article>
+    </div>
+
+    <!-- Add - Edit - Delete?: Post -->
+    <div class="cart">
+        <form method="post">
+            <div class="box">
+                <div class="main-box">
+                     <label asp-for="work.Id" for="Id" class="form-label">Código del Trabajo</label>
+                    <input
+                        asp-for="work.Id"
+                        type="number" 
+                        id="Id" 
+                        name="Id" 
+                        class="inputs" 
+                        placeholder="Ingresar código del trabajo" />
+                </div>
+                <div class="main-box">
+                    <label asp-for="work.Date" for="Date" class="form-label">Fecha</label>
+                    <input 
+                        asp-for="work.Date"
+                        type="date" 
+                        id="Date" 
+                        name="Date" 
+                        class="inputs" 
+                        placeholder="Ingresar fecha" />
+                </div>
+            </div>
+            <div class="box">
+                <div class="main-box">
+                    <label asp-for="work.HoursService" for="HoursService" class="form-label">Horas Solicitadas</label>
+                    <input 
+                        asp-for="work.HoursService" 
+                        type="number" 
+                        id="HoursService" 
+                        name="HoursService" 
+                        class="inputs" 
+                        placeholder="Ingresar valor del servicio" />
+                </div>
+                <div class="main-box">
+                    <label asp-for="work.HourlyRate" for="HourlyRate" class="form-label">Valor por hora</label>
+                    <input
+                        asp-for="work.HourlyRate"
+                        type="number"
+                        id="HourlyRate"
+                        name="HourlyRate"
+                        step="0.01" 
+                        class="inputs"
+                        placeholder="Ingresar horas solicitadas"/>
+                </div>
+            </div>
+            <div class="content">
+                <label asp-for="work.Value" for="Value" class="form-label">Valor total</label>
+                <input 
+                    asp-for="work.Value" 
+                    type="number" 
+                    id="Value" 
+                    name="Value" 
+                    step="0.01" 
+                    class="inputs" 
+                    placeholder="Valor total (cantHora*valorHora" />
+            </div>            
+            <div class="box">
+                <div class="main-box">
+                    <label asp-for="work.IdProject" for="IdProject" class="form-label">Código Proyecto </label>
+                    <input
+                        asp-for="work.IdProject"
+                        type="number"
+                        id="IdProject"
+                        name="IdProject"
+                        class="inputs"
+                        placeholder="Ingresar Cod. Projecto"/>
+                </div> 
+                <div class="main-box">
+                    <label asp-for="work.IdService" for="IdService" class="form-label">Valor por hora </label>
+                    <input
+                        asp-for="work.IdService"
+                        type="number"
+                        id="IdService"
+                        name="IdService"
+                        class="inputs"
+                        placeholder="Ingresar Cod. Servicio"/>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button asp-page-handler="post"
+                        type="submit" 
+                        class="btn btn-success">Agregar
+                </button>
+                <!-- Edit:   -->
+                <!-- <button type="submit" class="btn btn-primary">Modificar</button>
+                <button type="submit" class="btn btn-danger">Eliminar</button> -->
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

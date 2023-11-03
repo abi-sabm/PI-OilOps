@@ -6,52 +6,55 @@ using OilOpsFront.Models;
 
 namespace OilOpsFront.Pages;
 
-public class User : PageModel
-{ 
-    public List<UserModel> userList { get; set; }
+public class Works : PageModel
+{
+    public List<WorkModel> workList { get; set; }
     
     [BindProperty]
-    public UserModel user { get; set; }
+    public WorkModel work { get; set; }
     
-    // List: GetAll api/users
+    //List: GetAll api/works
     public async Task OnGetAsync()
     {
         using (var httpClient = new HttpClient())
         {
-            var response = await httpClient.GetAsync("https://localhost:7120/api/Users");
+            var response = await httpClient.GetAsync("https://localhost:7120/api/Works");
 
             if (response.IsSuccessStatusCode)
             {
-                userList = await response.Content.ReadFromJsonAsync<List<UserModel>>();
+                workList = await response.Content.ReadFromJsonAsync<List<WorkModel>>();
             }
             else
             {
-                userList = new List<UserModel>();
+                workList = new List<WorkModel>();
             }
         }
     }
-    // Add: Post api/users
+    // Add: Post api/works
     public async Task<IActionResult> OnPost()
     {
-        string name = Request.Form["Name"];
-        string fullName = Request.Form["FullName"]; 
-        string DNI = Request.Form["DNI"];
-        string userName = Request.Form["UserName"];
-        string password= Request.Form["Password"];
+
+        string date = Request.Form["Date"]; 
+        string hoursService = Request.Form["HoursService"];
+        string hourlyRate = Request.Form["HourlyRate"];
+        string value = Request.Form["Value"];
+        string idProject = Request.Form["IdProject"];
+        string idService = Request.Form["IdService"];
         
         var data = new 
         { 
-            name = name,
-            fullName = fullName,
-            DNI = DNI,
-            userName = userName,
-            password = password
+            date = date,
+            hoursService = hoursService,
+            hourlyRate = hourlyRate,
+            value = value,
+            idProject = idProject,
+            idService = idService
         };
         var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
         
         using (var httpClient = new HttpClient()) 
         {
-            var response = await httpClient.PostAsync("https://localhost:7120/api/Users", content);
+            var response = await httpClient.PostAsync("https://localhost:7120/api/Works", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -64,12 +67,12 @@ public class User : PageModel
             }
         }
     }
-    // Delete: Delete api/users
+    // Delete: Delete api/works
     public async Task<IActionResult> OnPostDelete(int id)
     {
         using (var httpClient = new HttpClient())
         {
-            var response = await httpClient.DeleteAsync($"https://localhost:7120/api/Users/" + id);
+            var response = await httpClient.DeleteAsync($"https://localhost:7120/api/Works/" + id);
 
             if (response.IsSuccessStatusCode) 
             {

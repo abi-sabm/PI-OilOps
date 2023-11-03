@@ -45,7 +45,7 @@ public class UserController : ControllerBase
 
     // POST: api/users
     [HttpPost]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Post(User user)
     { 
         await _userService.AddUser(user);
@@ -54,7 +54,7 @@ public class UserController : ControllerBase
 
     // PUT: api/users/{id}
     [HttpPut("{id}")]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Put(int id, User updatedUser)
     {
         var user = await _userService.GetUserById(id);
@@ -70,7 +70,7 @@ public class UserController : ControllerBase
 
     // DELETE: api/users/{id}
     [HttpDelete("{id}")]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         var user = await _userService.GetUserById(id);

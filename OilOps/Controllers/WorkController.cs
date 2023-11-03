@@ -48,7 +48,7 @@ public class WorkController : ControllerBase
 
     // POST: api/works
     [HttpPost]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Post(Work work)
     {
         await _workService.AddWork(work);
@@ -57,7 +57,7 @@ public class WorkController : ControllerBase
 
     // PUT: api/works/{id}
     [HttpPut("{id}")]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Put(int id, Work updatedWork)
     {
         var work = await _workService.GetWorkById(id);
@@ -74,7 +74,7 @@ public class WorkController : ControllerBase
 
     // DELETE: api/works/{id}
     [HttpDelete("{id}")]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         var work = await _workService.GetWorkById(id);

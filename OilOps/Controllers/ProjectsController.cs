@@ -54,7 +54,7 @@ public class ProjectsController : ControllerBase
     
     // POST: api/projects
     [HttpPost]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Post(Project project)
     {
         await _projectService.AddProject(project);
@@ -63,7 +63,7 @@ public class ProjectsController : ControllerBase
     
     // PUT: api/projects/{id}
     [HttpPut("{id}")]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Put(int id, Project updatedProject)
     {
         var project = await _projectService.GetProjectById(id);
@@ -77,7 +77,7 @@ public class ProjectsController : ControllerBase
 
     // DELETE: api/projects/{id}
     [HttpDelete("{id}")]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         var project = await _projectService.GetProjectById(id);

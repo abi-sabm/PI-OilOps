@@ -55,7 +55,7 @@ public class ServicesController : ControllerBase
     
     // POST: api/services
     [HttpPost]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Post(Service service)
     {
         await _serviceService.AddService(service);
@@ -64,7 +64,7 @@ public class ServicesController : ControllerBase
     
     //PUT: api/services/{id}
     [HttpPut("{id}")]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Put(int id, Service updateService)
     {
         var service = await _serviceService.GetServiceById(id);
@@ -78,7 +78,7 @@ public class ServicesController : ControllerBase
     
     //DELETE: api/services/{id}
     [HttpDelete("{id}")]
-    [Authorize(Roles = "1")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         var service = await _serviceService.GetServiceById(id);

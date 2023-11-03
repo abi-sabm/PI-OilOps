@@ -6,52 +6,50 @@ using OilOpsFront.Models;
 
 namespace OilOpsFront.Pages;
 
-public class User : PageModel
-{ 
-    public List<UserModel> userList { get; set; }
+public class Services : PageModel
+{
+    public List<ServiceModel> serviceList { get; set; }
     
     [BindProperty]
-    public UserModel user { get; set; }
+    public ServiceModel service { get; set; }
     
-    // List: GetAll api/users
+    //List: GetAll api/services
     public async Task OnGetAsync()
     {
         using (var httpClient = new HttpClient())
         {
-            var response = await httpClient.GetAsync("https://localhost:7120/api/Users");
+            var response = await httpClient.GetAsync("https://localhost:7120/api/Services");
 
             if (response.IsSuccessStatusCode)
             {
-                userList = await response.Content.ReadFromJsonAsync<List<UserModel>>();
+                serviceList = await response.Content.ReadFromJsonAsync<List<ServiceModel>>();
             }
             else
             {
-                userList = new List<UserModel>();
+                serviceList = new List<ServiceModel>();
             }
         }
     }
-    // Add: Post api/users
+    // Add: Post api/services
     public async Task<IActionResult> OnPost()
     {
         string name = Request.Form["Name"];
-        string fullName = Request.Form["FullName"]; 
-        string DNI = Request.Form["DNI"];
-        string userName = Request.Form["UserName"];
-        string password= Request.Form["Password"];
+        string description = Request.Form["Description"]; 
+        string hourlyRate = Request.Form["HourlyRate"];
+        string status = Request.Form["Status"];
         
         var data = new 
         { 
             name = name,
-            fullName = fullName,
-            DNI = DNI,
-            userName = userName,
-            password = password
+            description = description, 
+            hourlyRate = hourlyRate,
+            status = status
         };
         var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
         
         using (var httpClient = new HttpClient()) 
         {
-            var response = await httpClient.PostAsync("https://localhost:7120/api/Users", content);
+            var response = await httpClient.PostAsync("https://localhost:7120/api/Services", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -64,12 +62,12 @@ public class User : PageModel
             }
         }
     }
-    // Delete: Delete api/users
+    // Delete: Delete api/services
     public async Task<IActionResult> OnPostDelete(int id)
     {
         using (var httpClient = new HttpClient())
         {
-            var response = await httpClient.DeleteAsync($"https://localhost:7120/api/Users/" + id);
+            var response = await httpClient.DeleteAsync($"https://localhost:7120/api/Services/" + id);
 
             if (response.IsSuccessStatusCode) 
             {

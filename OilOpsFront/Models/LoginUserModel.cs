@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace OilOps.Models;
+namespace OilOpsFront.Models;
 
-public class LoginUser
+public class LoginUserModel
 {
     [Key]
     public string UserName { get; set; }

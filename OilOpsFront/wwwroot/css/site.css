@@ -1,18 +1,189 @@
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 60px;
+    width: 100%;
+}
+
+/* Title */
+body div.img-box {
+    border: 3px solid #212529;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgb(100, 100, 100);
+    height: 410px;
+    width: 100%;
+    overflow: hidden;
+}
+
+body .img-box img {
+    width: 100%;
+    transition: all 500ms ease-out;
+}
+
+body div.title {
+    background: rgba(14, 58, 113, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 500ms ease-out;
+    padding: 30px;
+    width: 100%;
+    height: 410px;
+}
+
+body div.title h1 {
+    font-family: 'Bitter', sans-serif;
+    font-size: 70px;
+    font-weight: bold;
+    text-align: center;
+    color: #94c4ff;
+    margin: 70px 0;
+}
+
+body .title h2 {
+    font-family: 'Bitter', sans-serif;
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+}
+
+body .img-box:hover > img {
+    transform: scale(1.1);
+}
+
+body .img-box:hover > .title {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-495px);
+    border-radius: 10px;
+}
+
+/* Box */
+body div.container-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #212529;
+    border-top: 3px solid #94c4ff;
+    margin: 40px;
+}
+
+body .container-box article.box {
+    background-color: #fff;
+    box-shadow: 0 0 20px rgb(100, 100, 100);
+    border-top: 2px solid #c8c8c8;
+    border-left: 2px solid #c8c8c8;
+    border-radius: 15px;
+    padding: 3%;
+    margin: 30px 0;
+    width: 50%;
+}
+
+body .container-box .box div.properties {
+    text-align: left;
+}
+
+
+/* Cart */
+body div.cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body .cart form {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #212529;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgb(100, 100, 100);
+    border-top: 2px solid #c8c8c8;
+    border-left: 2px solid #c8c8c8;
+    border-radius: 15px;
+    padding: 2%;
+    margin: 25px;
+    width: 50%;
+}
+
+body form div.box {
+    display: flex;
+    gap: 30px;
+    margin: 20px;
+}
+
+body form .box .main-box {
+    width: 50%;
+}
+
+body form .box .main-box p {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+}
+
+body form .box .main-box label {
+    font-size: 16px;
+    margin-right: 5%;
+}
+
+body form .content {
+    margin: 20px;
+}
+
+.inputs {
+    font-size: 16px;
+    text-align: left;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: solid 2px #94c4ff;
+    width: 100%;
+}
+
+/* Buttons */
+div.buttons {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+    padding: 3%;
+    margin: 20px 0;
+}
+
+div.buttons button.btn {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+div.buttons button.btn.btn-warning {
+    color: #212529;
+}
+
+div.buttons button.btn.btn-warning i {
+    color: #212529;
+    margin-right: 5px;
+}
+
+/* Querys */
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
 }
