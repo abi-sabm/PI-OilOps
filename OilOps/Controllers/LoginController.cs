@@ -46,8 +46,8 @@ public class LoginController : ControllerBase
 
             var subject = new ClaimsIdentity(new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Email, user.UserName),
+                new Claim(JwtRegisteredClaimNames.NameId, user.FullName),
+                new Claim(JwtRegisteredClaimNames.Name, user.UserName),
             });
 
             var expires = DateTime.UtcNow.AddMinutes(10);

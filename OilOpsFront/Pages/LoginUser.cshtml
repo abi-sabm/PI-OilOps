@@ -15,7 +15,7 @@
 
 <body>
 <div>
-    <div class="img-box">
+    <div id="login" class="img-box">
         <img src="images/login.jpg" alt="bg1"/> 
         
         <div class="title">
@@ -23,33 +23,34 @@
             <h2>Ingresá y descubrí nuestros servicios</h2>
         </div>
     </div>
-    
-    <form method="post" class="form-inline my-2 my-lg-0" >
-        <div class="content">
-            <label asp-for="loginUser.UserName" for="UserName">Nombre de Usuario</label>
-            <input 
-                asp-for="loginUser.UserName" 
-                type="text" 
-                id="UserName" 
-                name="UserName" 
-                class="inputs" 
-                placeholder="Ingresar nombre de usuario"/>
-        </div>
-        <div class="content">
-            <label asp-for="loginUser.Password" for="Password">Contraseña</label>
-            <input 
-                asp-for="loginUser.Password" 
-                type="text" 
-                id="Password" 
-                name="Password" 
-                class="inputs" 
-                placeholder="Ingresar contraseña" />
-        </div>
-        <button asp-page-handler="post" 
-                type="submit" 
-                class="btn btn-primary">Ingresar
-        </button>
-    </form>
+    <div class="form-login">
+        <form method="post" id="login-form" class="form-inline my-2 my-lg-0" >
+            <div class="content">
+                <label asp-for="loginUser.UserName" for="UserName">Nombre de Usuario</label>
+                <input 
+                    asp-for="loginUser.UserName" 
+                    type="text" 
+                    id="UserName" 
+                    name="UserName" 
+                    class="inputs" 
+                    placeholder="Ingresar nombre de usuario"/>
+            </div>
+            <div class="content">
+                <label asp-for="loginUser.Password" for="Password">Contraseña</label>
+                <input 
+                    asp-for="loginUser.Password" 
+                    type="password" 
+                    id="Password" 
+                    name="Password" 
+                    class="inputs" 
+                    placeholder="Ingresar contraseña" />
+            </div>
+            <button asp-page-handler="post" 
+                    type="submit" 
+                    class="btn btn-primary">Ingresar
+            </button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

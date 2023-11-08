@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -26,7 +25,7 @@ public class LoginUser : PageModel
            return Page(); 
         }
         
-        var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7120/api/login");
+        var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:7120/loginUser");
         request.Content = new StringContent(JsonConvert.SerializeObject(loginUser), Encoding.UTF8, "application/json");
 
         var client = _clientFactory.CreateClient();

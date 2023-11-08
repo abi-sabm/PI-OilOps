@@ -3,19 +3,79 @@ html {
     min-height: 100%;
 }
 
+#nav-header {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#logo {
+    font-weight: bold;
+    font-size: 22px;
+    color: #d40f15;
+}
+
 body {
     display: flex;
     flex-direction: column;
     margin-bottom: 60px;
     width: 100%;
+    background-color: #020f1f;
 }
 
+/* Index */
+/* Title */
+body div.index-title {
+    text-align: center;
+    margin: 70px 0;
+}
+
+body div.index-title h1 {
+    font-family: 'Bitter', sans-serif;
+    font-weight: bold;
+    font-size: 90px;
+    color: #94c4ff;
+}
+
+body div.index-title h2 {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 50px;
+    font-weight: bold;
+    color: #d8d8d8;
+}
+
+body .index-title div.img-index {
+    display: flex;
+    justify-content: space-around;
+    margin: 50px 0;
+    width: 100%;
+}
+
+body .index-title div.img-index img {
+    max-width: 50%;
+}
+
+body div.banner {
+    border: 3px solid #212529;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgb(100, 100, 100);
+    margin: 50px 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+body div.banner img {
+    width: 100%;
+}
+
+
+/* Services - Projects - Works - Users - LoginUser */
 /* Title */
 body div.img-box {
     border: 3px solid #212529;
     border-radius: 15px;
     box-shadow: 0 0 10px rgb(100, 100, 100);
-    height: 410px;
+    height: 250px;
     width: 100%;
     overflow: hidden;
 }
@@ -27,12 +87,14 @@ body .img-box img {
 
 body div.title {
     background: rgba(14, 58, 113, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 500ms ease-out;
+    border-radius: 10px;
     padding: 30px;
     width: 100%;
-    height: 410px;
+    height: 250px;
+    opacity: 1;
+    transition: all 500ms ease-out;
+    visibility: visible;
+    transform: translateY(-550px);
 }
 
 body div.title h1 {
@@ -41,7 +103,7 @@ body div.title h1 {
     font-weight: bold;
     text-align: center;
     color: #94c4ff;
-    margin: 70px 0;
+    margin: 20px 0;
 }
 
 body .title h2 {
@@ -54,13 +116,6 @@ body .title h2 {
 
 body .img-box:hover > img {
     transform: scale(1.1);
-}
-
-body .img-box:hover > .title {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(-495px);
-    border-radius: 10px;
 }
 
 /* Box */
@@ -91,7 +146,6 @@ body .container-box article.box {
 body .container-box .box div.properties {
     text-align: left;
 }
-
 
 /* Cart */
 body div.cart {
@@ -136,8 +190,27 @@ body form .box .main-box label {
     margin-right: 5%;
 }
 
-body form .content {
-    margin: 20px;
+/* login-form */
+body div.form-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 100px 0;
+}
+
+body .form-login form {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #212529;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgb(100, 100, 100);
+    border-top: 2px solid #c8c8c8;
+    border-left: 2px solid #c8c8c8;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 50px 0;
+    width: 50%;
 }
 
 .inputs {

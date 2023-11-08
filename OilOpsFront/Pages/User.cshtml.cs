@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,7 +19,10 @@ public class User : PageModel
     {
         using (var httpClient = new HttpClient())
         {
-            var response = await httpClient.GetAsync("https://localhost:7120/api/Users");
+            string token = HttpContext.Session.GetString("BearerToken");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);  
+            
+            var response = await httpClient.GetAsync("http://localhost:7120/Users");
 
             if (response.IsSuccessStatusCode)
             {
@@ -30,38 +34,39 @@ public class User : PageModel
             }
         }
     }
-    // Add: Post api/users
-    public async Task<IActionResult> OnPost()
+    // GetById api/users/{id}
+    public User Users { get; set; } = new User();
+    public async Task OnGetAsync(int id)
     {
-        string name = Request.Form["Name"];
-        string fullName = Request.Form["FullName"]; 
-        string DNI = Request.Form["DNI"];
-        string userName = Request.Form["UserName"];
-        string password= Request.Form["Password"];
-        
-        var data = new 
-        { 
-            name = name,
-            fullName = fullName,
-            DNI = DNI,
-            userName = userName,
-            password = password
-        };
-        var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-        
+        using (var httpClient = new HttpClient())
+        {
+            string token = HttpContext.Session.GetString("BearerToken");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
+            Users = await httpClient.GetFromJsonAsync<User>($"Users/{id}");
+        }
+    }
+    // Add: Post api/users
+    public async Task<IActionResult> OnPostAsync(User user)
+    {
         using (var httpClient = new HttpClient()) 
         {
+            string token = HttpContext.Session.GetString("BearerToken"); 
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token); 
+            
+            var content = new StringContent(JsonConvert.SerializeObject(User), Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync("https://localhost:7120/api/Users", content);
+            var getResponse = await httpClient.GetAsync("http://localhost:7120/Users"); 
 
             if (response.IsSuccessStatusCode)
             {
-                await OnGetAsync();
-                return Page();
+                userList = await getResponse.Content.ReadFromJsonAsync<List<UserModel>>();
             }
             else
             {
-                return Page();
-            }
+                userList = new List<UserModel>();
+            } 
+            return RedirectToPage("/Users"); 
         }
     }
     // Delete: Delete api/users
@@ -69,12 +74,14 @@ public class User : PageModel
     {
         using (var httpClient = new HttpClient())
         {
-            var response = await httpClient.DeleteAsync($"https://localhost:7120/api/Users/" + id);
+            string token = HttpContext.Session.GetString("BearerToken"); 
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
+            var response = await httpClient.DeleteAsync($"https://localhost:7120/api/Users/{user.Id}");
 
-            if (response.IsSuccessStatusCode) 
+            if (response.IsSuccessStatusCode)
             {
-                await OnGetAsync();
-                return Page();
+                return RedirectToPage("/Users");
             }
             else
             {
